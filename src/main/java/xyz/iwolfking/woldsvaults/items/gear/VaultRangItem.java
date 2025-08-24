@@ -126,7 +126,7 @@ public class VaultRangItem extends BasicItem implements VaultGearItem, DyeableLe
     }
 
     @NotNull
-    @SuppressWarnings({"deprecation","removal"})
+    @SuppressWarnings({"deprecation"})
     public ProficiencyType getCraftingProficiencyType(ItemStack itemStack) {
         return ProficiencyType.SWORD;
     }

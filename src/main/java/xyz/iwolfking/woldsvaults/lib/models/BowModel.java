@@ -1,201 +1,120 @@
 package xyz.iwolfking.woldsvaults.lib.models;
 
-import iskallia.vault.dynamodel.DynamicModel;
-import iskallia.vault.init.ModDynamicModels;
 import net.minecraft.client.renderer.block.model.BlockModel;
+import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import com.mojang.math.Vector3f;
+
+import iskallia.vault.dynamodel.DynamicModel;
+import iskallia.vault.init.ModDynamicModels;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import xyz.iwolfking.woldsvaults.builders.BuilderBlockModel;
+
 public class BowModel extends DynamicModel<BowModel> {
-    public BowModel(ResourceLocation id, String displayName) {
-        super(id, displayName);
-    }
+   public BowModel(ResourceLocation id, String displayName) {
+      super(id, displayName);
+   }
 
-    @OnlyIn(Dist.CLIENT)
-    @Override
-    public BlockModel generateItemModel(Map<String, ResourceLocation> textures) {
-        String jsonPattern = """
-            {
-              "parent": "item/generated",
-              "textures": {
-                "layer0": "minecraft:item/bow"
-              },
-              "display": {
-                "thirdperson_righthand": {
-                  "rotation": [
-                    -80,
-                    260,
-                    -40
-                  ],
-                  "translation": [
-                    -1,
-                    -2,
-                    2.5
-                  ],
-                  "scale": [
-                    0.9,
-                    0.9,
-                    0.9
-                  ]
-                },
-                "thirdperson_lefthand": {
-                  "rotation": [
-                    -80,
-                    -280,
-                    40
-                  ],
-                  "translation": [
-                    -1,
-                    -2,
-                    2.5
-                  ],
-                  "scale": [
-                    0.9,
-                    0.9,
-                    0.9
-                  ]
-                },
-                "firstperson_righthand": {
-                  "rotation": [
-                    0,
-                    -90,
-                    25
-                  ],
-                  "translation": [
-                    1.13,
-                    3.2,
-                    1.13
-                  ],
-                  "scale": [
-                    0.68,
-                    0.68,
-                    0.68
-                  ]
-                },
-                "firstperson_lefthand": {
-                  "rotation": [
-                    0,
-                    90,
-                    -25
-                  ],
-                  "translation": [
-                    1.13,
-                    3.2,
-                    1.13
-                  ],
-                  "scale": [
-                    0.68,
-                    0.68,
-                    0.68
-                  ]
-                }
-              },
-              "overrides": [
-                {
-                  "predicate": {
-                    "pulling": 1
-                  },
-                  "model": "minecraft:item/bow_pulling_0"
-                },
-                {
-                  "predicate": {
-                    "pulling": 1,
-                    "pull": 0.65
-                  },
-                  "model": "minecraft:item/bow_pulling_1"
-                },
-                {
-                  "predicate": {
-                    "pulling": 1,
-                    "pull": 0.9
-                  },
-                  "model": "minecraft:item/bow_pulling_2"
-                },
-            {
-                        "predicate": {
-                            "custom_model_data": 1
-                        },
-                        "model": "item/custom_bow"
-                    },
-                    {
-                        "predicate": {
-                            "custom_model_data": 1,
-                            "pulling": 1
-                        },
-                        "model": "item/custom_bow_pulling_0"
-                    },
-                    {
-                        "predicate": {
-                            "custom_model_data": 1,
-                            "pulling": 1,
-                            "pull": 0.65
-                        },
-                        "model": "item/custom_bow_pulling_1"
-                    },
-                    {
-                        "predicate": {
-                            "custom_model_data": 1,
-                            "pulling": 1,
-                            "pull": 0.9
-                        },
-                        "model": "item/custom_bow_pulling_2"
-                    }\
-              ]
-            }""";
-        return this.createUnbakedModel(jsonPattern, textures);
-    }
+   @OnlyIn(Dist.CLIENT)
+   @Override
+   public BlockModel generateItemModel(Map<String, ResourceLocation> textures) {
+      return MODEL;
+   }
+   
+   private static final BlockModel MODEL;
 
-    @Override
-    protected BlockModel createUnbakedModel(String jsonPattern, Map<String, ResourceLocation> textures) {
-//        String texturesJson = (String)textures.entrySet().stream().map((entry) -> {
-//            if(entry.getKey().equals("bow_pulling_0") || entry.getKey().equals("bow_pulling_1") || entry.getKey().equals("bow_pulling_2")) {
-//                return null;
-//            }
-//            String var10000 = (String)entry.getKey();
-//            return "\"" + var10000 + "\": \"" + entry.getValue() + "\"";
-//        }).collect(Collectors.joining(", ", "{", "}"));
-//        String modelJson = jsonPattern.replace("{{textures}}", texturesJson);
-//        modelJson = modelJson.replace("{{bow_pulling_0}}", textures.get("bow_pulling_model_0").toString());
-//        modelJson = modelJson.replace("{{bow_pulling_1}}", textures.get("bow_pulling_model_1").toString());
-//        modelJson = modelJson.replace("{{bow_pulling_2}}", textures.get("bow_pulling_model_2").toString());
-//        System.out.println(modelJson);
-//        WoldsVaults.LOGGER.info(modelJson);
-        return BlockModel.fromString(jsonPattern);
-    }
+   static {
+      BuilderBlockModel builder = new BuilderBlockModel()
+         .parent("minecraft:item/generated")
+         .putTexture("layer0", "minecraft:item/bow")
+         .beginTransforms()
+            .transform(TransformType.THIRD_PERSON_LEFT_HAND, 
+               new Vector3f(-80.0f, -280.0f, 40.0f),
+               new Vector3f(-1.0f, -2.0f, 2.5f),
+               new Vector3f(0.9f, 0.9f, 0.9f)
+            )
+            .transform(TransformType.THIRD_PERSON_RIGHT_HAND, 
+               new Vector3f(-80.0f, 260.0f, -40.0f),
+               new Vector3f(-1.0f, -2.0f, 2.5f),
+               new Vector3f(0.9f, 0.9f, 0.9f)
+            )
+            .transform(TransformType.FIRST_PERSON_LEFT_HAND, 
+               new Vector3f(0.0f, 90.0f, -25.0f),
+               new Vector3f(1.13f, 3.2f, 1.13f),
+               new Vector3f(0.68f, 0.68f, 0.68f)
+            )
+            .transform(TransformType.FIRST_PERSON_RIGHT_HAND, 
+               new Vector3f(0.0f, -90.0f, 25.0f),
+               new Vector3f(1.13f, 3.2f, 1.13f),
+               new Vector3f(0.68f, 0.68f, 0.68f)
+            )
+            .buildTransforms()
+         .beginOverride("minecraft:item/bow_pulling_0")
+            .predicate("pulling", 1.0f)
+            .buildOverride()
+         .beginOverride("minecraft:item/bow_pulling_1")
+            .predicate("pulling", 1.0f)
+            .predicate("pull", 0.65f)
+            .buildOverride()
+         .beginOverride("minecraft:item/bow_pulling_2")
+            .predicate("pulling", 1.0f)
+            .predicate("pull", 0.9f)
+            .buildOverride()
+         .beginOverride("item/custom_bow")
+            .predicate("custom_model_data", 1.0f)
+            .buildOverride()
+         .beginOverride("item/custom_bow_pulling_0")
+            .predicate("custom_model_data", 1.0f)
+            .predicate("pulling", 1)
+            .buildOverride()
+         .beginOverride("item/custom_bow_pulling_1")
+            .predicate("custom_model_data", 1.0f)
+            .predicate("pulling", 1)
+            .predicate("pull", 0.65f)
+            .buildOverride()
+         .beginOverride("item/custom_bow_pulling_2")
+            .predicate("custom_model_data", 1.0f)
+            .predicate("pulling", 1)
+            .predicate("pull", 0.9f)
+            .buildOverride();
 
-    @OnlyIn(Dist.CLIENT)
-    @Override
-    public Map<String, ResourceLocation> resolveTextures(ResourceManager resourceManager, ResourceLocation resourceLocation) {
-        HashMap<String, ResourceLocation> textures = new HashMap<>();
-        textures.put("layer0", ModDynamicModels.textureExists(resourceManager, resourceLocation) ? resourceLocation : ModDynamicModels.EMPTY_TEXTURE);
-        if (ModDynamicModels.textureExists(resourceManager, appendToId(resourceLocation, "_overlay"))) {
-            textures.put("layer1", appendToId(resourceLocation, "_overlay"));
-        }
+      MODEL = builder.build();
+   }
 
-        for(int i = 0; i < 10; ++i) {
-            if (ModDynamicModels.textureExists(resourceManager, appendToId(resourceLocation, "_layer" + i))) {
-                textures.put("layer" + i, appendToId(resourceLocation, "_layer" + i));
-            }
-        }
+   @OnlyIn(Dist.CLIENT)
+   @Override
+   public Map<String, ResourceLocation> resolveTextures(ResourceManager resourceManager, ResourceLocation resourceLocation) {
+      HashMap<String, ResourceLocation> textures = new HashMap<>();
+      textures.put("layer0", ModDynamicModels.textureExists(resourceManager, resourceLocation) ? resourceLocation : ModDynamicModels.EMPTY_TEXTURE);
+      if (ModDynamicModels.textureExists(resourceManager, appendToId(resourceLocation, "_overlay"))) {
+         textures.put("layer1", appendToId(resourceLocation, "_overlay"));
+      }
 
-        String modelName = resourceLocation.toString().substring(resourceLocation.toString().lastIndexOf('/') + 1);
-        if(ModDynamicModels.jsonModelExists(resourceManager, appendToId(resourceLocation, "_pulling_0"))) {
-            textures.put("bow_pulling_model_0", new ResourceLocation("the_vault", "models/item/gear/bow/" + modelName + "_pulling_0"));
-        }
+      for(int i = 0; i < 10; ++i) {
+         if (ModDynamicModels.textureExists(resourceManager, appendToId(resourceLocation, "_layer" + i))) {
+            textures.put("layer" + i, appendToId(resourceLocation, "_layer" + i));
+         }
+      }
 
-        if(ModDynamicModels.jsonModelExists(resourceManager, appendToId(resourceLocation, "_pulling_1"))) {
-            textures.put("bow_pulling_model_1", new ResourceLocation("the_vault", "models/item/gear/bow/" + modelName + "_pulling_1"));
-        }
+      String modelName = resourceLocation.toString().substring(resourceLocation.toString().lastIndexOf('/') + 1);
+      if(ModDynamicModels.jsonModelExists(resourceManager, appendToId(resourceLocation, "_pulling_0"))) {
+         textures.put("bow_pulling_model_0", new ResourceLocation("the_vault", "models/item/gear/bow/" + modelName + "_pulling_0"));
+      }
 
-        if(ModDynamicModels.jsonModelExists(resourceManager, appendToId(resourceLocation, "_pulling_2"))) {
-            textures.put("bow_pulling_model_2", new ResourceLocation("the_vault", "models/item/gear/bow/" + modelName + "_pulling_2"));
-        }
+      if(ModDynamicModels.jsonModelExists(resourceManager, appendToId(resourceLocation, "_pulling_1"))) {
+         textures.put("bow_pulling_model_1", new ResourceLocation("the_vault", "models/item/gear/bow/" + modelName + "_pulling_1"));
+      }
 
-        return textures;
-    }
+      if(ModDynamicModels.jsonModelExists(resourceManager, appendToId(resourceLocation, "_pulling_2"))) {
+         textures.put("bow_pulling_model_2", new ResourceLocation("the_vault", "models/item/gear/bow/" + modelName + "_pulling_2"));
+      }
+
+      return textures;
+   }
 }
