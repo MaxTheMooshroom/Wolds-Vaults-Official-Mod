@@ -4,7 +4,6 @@ import com.google.common.collect.Multimap;
 import iskallia.vault.dynamodel.DynamicModel;
 import iskallia.vault.gear.VaultGearClassification;
 import iskallia.vault.gear.VaultGearHelper;
-import iskallia.vault.gear.VaultGearRarity;
 import iskallia.vault.gear.VaultGearState;
 import iskallia.vault.gear.VaultGearType;
 import iskallia.vault.gear.attribute.type.VaultGearAttributeTypeMerger;
@@ -15,8 +14,6 @@ import iskallia.vault.gear.item.VaultGearToolTier;
 import iskallia.vault.gear.tooltip.GearTooltip;
 import iskallia.vault.init.ModConfigs;
 import iskallia.vault.init.ModGearAttributes;
-import iskallia.vault.item.gear.VaultSwordItem;
-import iskallia.vault.util.MiscUtils;
 import iskallia.vault.world.data.DiscoveredModelsData;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
@@ -85,7 +82,7 @@ public class VaultBattleStaffItem extends SwordItem implements VaultGearItem, Dy
     }
 
 
-    @Nonnull @SuppressWarnings({"deprecation","removal"})
+    @Nonnull @SuppressWarnings({"deprecation"})
     public ProficiencyType getCraftingProficiencyType(ItemStack stack) {
         return ProficiencyType.SWORD;
     }

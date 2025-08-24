@@ -1,172 +1,103 @@
 package xyz.iwolfking.woldsvaults.lib.models;
 
-import iskallia.vault.dynamodel.DynamicModel;
-import iskallia.vault.init.ModDynamicModels;
 import net.minecraft.client.renderer.block.model.BlockModel;
+import net.minecraft.client.renderer.block.model.ItemTransform;
+import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import com.mojang.math.Vector3f;
+
+import iskallia.vault.init.ModDynamicModels;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class BowModel extends DynamicModel<BowModel> {
-    public BowModel(ResourceLocation id, String displayName) {
-        super(id, displayName);
-    }
+import xyz.iwolfking.woldsvaults.builders.BuilderBlockModel;
+import xyz.iwolfking.woldsvaults.mixins.vaulthunters.custom.MixinDynamicModel;
 
-    @OnlyIn(Dist.CLIENT)
-    @Override
-    public BlockModel generateItemModel(Map<String, ResourceLocation> textures) {
-        String jsonPattern = """
-            {
-              "parent": "item/generated",
-              "textures": {
-                "layer0": "minecraft:item/bow"
-              },
-              "display": {
-                "thirdperson_righthand": {
-                  "rotation": [
-                    -80,
-                    260,
-                    -40
-                  ],
-                  "translation": [
-                    -1,
-                    -2,
-                    2.5
-                  ],
-                  "scale": [
-                    0.9,
-                    0.9,
-                    0.9
-                  ]
-                },
-                "thirdperson_lefthand": {
-                  "rotation": [
-                    -80,
-                    -280,
-                    40
-                  ],
-                  "translation": [
-                    -1,
-                    -2,
-                    2.5
-                  ],
-                  "scale": [
-                    0.9,
-                    0.9,
-                    0.9
-                  ]
-                },
-                "firstperson_righthand": {
-                  "rotation": [
-                    0,
-                    -90,
-                    25
-                  ],
-                  "translation": [
-                    1.13,
-                    3.2,
-                    1.13
-                  ],
-                  "scale": [
-                    0.68,
-                    0.68,
-                    0.68
-                  ]
-                },
-                "firstperson_lefthand": {
-                  "rotation": [
-                    0,
-                    90,
-                    -25
-                  ],
-                  "translation": [
-                    1.13,
-                    3.2,
-                    1.13
-                  ],
-                  "scale": [
-                    0.68,
-                    0.68,
-                    0.68
-                  ]
-                }
-              },
-              "overrides": [
-                {
-                  "predicate": {
-                    "pulling": 1
-                  },
-                  "model": "minecraft:item/bow_pulling_0"
-                },
-                {
-                  "predicate": {
-                    "pulling": 1,
-                    "pull": 0.65
-                  },
-                  "model": "minecraft:item/bow_pulling_1"
-                },
-                {
-                  "predicate": {
-                    "pulling": 1,
-                    "pull": 0.9
-                  },
-                  "model": "minecraft:item/bow_pulling_2"
-                },
-            {
-                        "predicate": {
-                            "custom_model_data": 1
-                        },
-                        "model": "item/custom_bow"
-                    },
-                    {
-                        "predicate": {
-                            "custom_model_data": 1,
-                            "pulling": 1
-                        },
-                        "model": "item/custom_bow_pulling_0"
-                    },
-                    {
-                        "predicate": {
-                            "custom_model_data": 1,
-                            "pulling": 1,
-                            "pull": 0.65
-                        },
-                        "model": "item/custom_bow_pulling_1"
-                    },
-                    {
-                        "predicate": {
-                            "custom_model_data": 1,
-                            "pulling": 1,
-                            "pull": 0.9
-                        },
-                        "model": "item/custom_bow_pulling_2"
-                    }\
-              ]
-            }""";
-        return this.createUnbakedModel(jsonPattern, textures);
-    }
+// see also:
+// xyz.iwolfking.woldsvaults.mixins.vaulthunters.custom.MixinDynamicModel.createDefaultItemModel()
+@SuppressWarnings({"deprecation"})
+public class BowModel extends MixinDynamicModel<BowModel> {
+   public BowModel(ResourceLocation id, String displayName) {
+      super(id, displayName);
+   }
 
-    @Override
-    protected BlockModel createUnbakedModel(String jsonPattern, Map<String, ResourceLocation> textures) {
-//        String texturesJson = (String)textures.entrySet().stream().map((entry) -> {
-//            if(entry.getKey().equals("bow_pulling_0") || entry.getKey().equals("bow_pulling_1") || entry.getKey().equals("bow_pulling_2")) {
-//                return null;
-//            }
-//            String var10000 = (String)entry.getKey();
-//            return "\"" + var10000 + "\": \"" + entry.getValue() + "\"";
-//        }).collect(Collectors.joining(", ", "{", "}"));
-//        String modelJson = jsonPattern.replace("{{textures}}", texturesJson);
-//        modelJson = modelJson.replace("{{bow_pulling_0}}", textures.get("bow_pulling_model_0").toString());
-//        modelJson = modelJson.replace("{{bow_pulling_1}}", textures.get("bow_pulling_model_1").toString());
-//        modelJson = modelJson.replace("{{bow_pulling_2}}", textures.get("bow_pulling_model_2").toString());
-//        System.out.println(modelJson);
-//        WoldsVaults.LOGGER.info(modelJson);
-        return BlockModel.fromString(jsonPattern);
-    }
+   @OnlyIn(Dist.CLIENT)
+   @Override
+   public BlockModel generateItemModel(Map<String, ResourceLocation> textures) {
+      return MODEL;
+   }
+   
+   private static final BlockModel MODEL;
+
+   static {
+      ItemTransform thirdPersonLeft = new ItemTransform(
+         new Vector3f(-80.0f, -280.0f, 40.0f),
+         new Vector3f(-1.0f, -2.0f, 2.5f),
+         new Vector3f(0.9f, 0.9f, 0.9f)
+      );
+
+      ItemTransform thirdPersonRight = new ItemTransform(
+         new Vector3f(-80.0f, 260.0f, -40.0f),
+         new Vector3f(-1.0f, -2.0f, 2.5f),
+         new Vector3f(0.9f, 0.9f, 0.9f)
+      );
+
+      ItemTransform firstPersonLeft = new ItemTransform(
+         new Vector3f(0.0f, 90.0f, -25.0f),
+         new Vector3f(1.13f, 3.2f, 1.13f),
+         new Vector3f(0.68f, 0.68f, 0.68f)
+      );
+
+      ItemTransform firstPersonRight = new ItemTransform(
+         new Vector3f(0.0f, -90.0f, 25.0f),
+         new Vector3f(1.13f, 3.2f, 1.13f),
+         new Vector3f(0.68f, 0.68f, 0.68f)
+      );
+
+      BuilderBlockModel builder = new BuilderBlockModel()
+         .parent("minecraft:item/generated")
+         .putTexture("layer0", "minecraft:item/bow")
+         .beginTransforms()
+            .put(TransformType.THIRD_PERSON_LEFT_HAND, thirdPersonLeft)
+            .put(TransformType.THIRD_PERSON_RIGHT_HAND, thirdPersonRight)
+            .put(TransformType.FIRST_PERSON_LEFT_HAND, firstPersonLeft)
+            .put(TransformType.FIRST_PERSON_RIGHT_HAND, firstPersonRight)
+            .buildTransforms()
+         .beginOverride("minecraft:item/bow_pulling_0")
+            .predicate("pulling", 1.0f)
+            .buildOverride()
+         .beginOverride("minecraft:item/bow_pulling_1")
+            .predicate("pulling", 1.0f)
+            .predicate("pull", 0.65f)
+            .buildOverride()
+         .beginOverride("minecraft:item/bow_pulling_2")
+            .predicate("pulling", 1.0f)
+            .predicate("pull", 0.9f)
+            .buildOverride()
+         .beginOverride("item/custom_bow")
+            .predicate("custom_model_data", 1.0f)
+            .buildOverride()
+         .beginOverride("item/custom_bow_pulling_0")
+            .predicate("custom_model_data", 1.0f)
+            .predicate("pulling", 1)
+            .buildOverride()
+         .beginOverride("item/custom_bow_pulling_1")
+            .predicate("custom_model_data", 1.0f)
+            .predicate("pulling", 1)
+            .predicate("pull", 0.65f)
+            .buildOverride()
+         .beginOverride("item/custom_bow_pulling_2")
+            .predicate("custom_model_data", 1.0f)
+            .predicate("pulling", 1)
+            .predicate("pull", 0.9f)
+            .buildOverride();
+
+      MODEL = builder.build();
+   }
 
     @OnlyIn(Dist.CLIENT)
     @Override

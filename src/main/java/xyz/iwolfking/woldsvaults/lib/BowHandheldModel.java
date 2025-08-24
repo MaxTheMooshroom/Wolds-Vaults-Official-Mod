@@ -1,73 +1,84 @@
 package xyz.iwolfking.woldsvaults.lib;
 
-import iskallia.vault.dynamodel.DynamicModel;
 import iskallia.vault.dynamodel.model.item.HandHeldModel;
+
 import net.minecraft.client.renderer.block.model.BlockModel;
+import net.minecraft.client.renderer.block.model.ItemTransform;
+import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import com.mojang.math.Vector3f;
+
 import java.util.Map;
 
-public class BowHandheldModel extends DynamicModel<HandHeldModel> {
+import xyz.iwolfking.woldsvaults.builders.BuilderBlockModel;
+import xyz.iwolfking.woldsvaults.mixins.vaulthunters.custom.MixinDynamicModel;
 
-    public BowHandheldModel(ResourceLocation id, String displayName) {
-        super(id, displayName);
-    }
+// see also:
+// xyz.iwolfking.woldsvaults.mixins.vaulthunters.custom.MixinDynamicModel.createDefaultItemModel()
+@SuppressWarnings({"deprecation"})
+public class BowHandheldModel extends MixinDynamicModel<HandHeldModel> {
+   public BowHandheldModel(ResourceLocation id, String displayName) {
+      super(id, displayName);
+   }
 
-    @Override
-    @OnlyIn(Dist.CLIENT)
-    public BlockModel generateItemModel(Map<String, ResourceLocation> textures) {
-        String jsonPattern = """
-                {
-                    "parent": "item/generated",
-                    "textures": {{textures}},
-                    "display": {
-                        "thirdperson_righthand": {
-                            "rotation": [ -80, 260, -40 ],
-                            "translation": [ -1, -2, 2.5 ],
-                            "scale": [ 0.9, 0.9, 0.9 ]
-                        },
-                        "thirdperson_lefthand": {
-                            "rotation": [ -80, -280, 40 ],
-                            "translation": [ -1, -2, 2.5 ],
-                            "scale": [ 0.9, 0.9, 0.9 ]
-                        },
-                        "firstperson_righthand": {
-                            "rotation": [ 0, -90, 25 ],
-                            "translation": [ 1.13, 3.2, 1.13],
-                            "scale": [ 0.68, 0.68, 0.68 ]
-                        },
-                        "firstperson_lefthand": {
-                            "rotation": [ 0, 90, -25 ],
-                            "translation": [ 1.13, 3.2, 1.13],
-                            "scale": [ 0.68, 0.68, 0.68 ]
-                        }
-                    },
-                    "overrides": [
-                        {
-                            "predicate": {
-                                "pulling": 1
-                            },
-                            "model": "item/bow_pulling_0"
-                        },
-                        {
-                            "predicate": {
-                                "pulling": 1,
-                                "pull": 0.65
-                            },
-                            "model": "item/bow_pulling_1"
-                        },
-                        {
-                            "predicate": {
-                                "pulling": 1,
-                                "pull": 0.9
-                            },
-                            "model": "item/bow_pulling_2"
-                        }
-                    ]
-                }
-                """;
-        return this.createUnbakedModel(jsonPattern, textures);
-    }
+   @Override
+   @OnlyIn(Dist.CLIENT)
+   public BlockModel generateItemModel(Map<String, ResourceLocation> textures) {
+      return this.createUnbakedModel(MODEL.clone(), textures);
+   }
+
+   private static final BuilderBlockModel MODEL;
+
+   static {
+      ItemTransform thirdPersonLeft = new ItemTransform(
+         new Vector3f(-80.0f, -280.0f, 40.0f),
+         new Vector3f(1.0f, -2.0f, 2.5f),
+         new Vector3f(0.9f, 0.9f, 0.9f)
+      );
+
+      ItemTransform thirdPersonRight = new ItemTransform(
+         new Vector3f(-80.0f, 260.0f, -40.0f),
+         new Vector3f(-1.0f, -2.0f, 2.5f),
+         new Vector3f(0.9f, 0.9f, 0.9f)
+      );
+
+      ItemTransform firstPersonLeft = new ItemTransform(
+         new Vector3f(0.0f, 90.0f, -25.0f),
+         new Vector3f(1.13f, 3.2f, 1.13f),
+         new Vector3f(0.68f, 0.68f, 0.68f)
+      );
+
+      ItemTransform firstPersonRight = new ItemTransform(
+         new Vector3f(0.0f, -90.0f, 25.0f),
+         new Vector3f(1.13f, 3.2f, 1.13f),
+         new Vector3f(0.68f, 0.68f, 0.68f)
+      );
+
+      BuilderBlockModel builder = new BuilderBlockModel()
+         .parent("minecraft:item/generated")
+         .beginTransforms()
+            .put(TransformType.THIRD_PERSON_LEFT_HAND, thirdPersonLeft)
+            .put(TransformType.THIRD_PERSON_RIGHT_HAND, thirdPersonRight)
+            .put(TransformType.FIRST_PERSON_LEFT_HAND, firstPersonLeft)
+            .put(TransformType.FIRST_PERSON_RIGHT_HAND, firstPersonRight)
+            .buildTransforms()
+         .beginOverride("item/bow_pulling_0")
+            .predicate("pulling", 1.0f)
+            .buildOverride()
+         .beginOverride("item/bow_pulling_1")
+            .predicate("pulling", 1.0f)
+            .predicate("pull", 0.65f)
+            .buildOverride()
+         .beginOverride("item/bow_pulling_2")
+            .predicate("pulling", 1.0f)
+            .predicate("pull", 0.9f)
+            .buildOverride()
+         .ambientOcclusion(true)
+         .guiLight(BlockModel.GuiLight.SIDE);
+
+      MODEL = builder.freeze();
+   }
 }
