@@ -11,7 +11,6 @@ import iskallia.vault.gear.item.VaultGearItem;
 import iskallia.vault.gear.tooltip.GearTooltip;
 import iskallia.vault.init.ModConfigs;
 import iskallia.vault.item.BasicItem;
-import iskallia.vault.item.tool.JewelItem;
 import iskallia.vault.world.data.DiscoveredModelsData;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
@@ -54,7 +53,7 @@ public class VaultMapItem extends BasicItem implements VaultGearItem {
     }
 
     @NotNull
-    @SuppressWarnings({"removal", "deprecation"})
+    @SuppressWarnings({"deprecation"})
     public ProficiencyType getCraftingProficiencyType(ItemStack itemStack) {
         return ProficiencyType.UNKNOWN;
     }

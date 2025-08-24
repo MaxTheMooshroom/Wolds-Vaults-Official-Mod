@@ -54,7 +54,7 @@ public class VaultPlushieItem extends BasicItem implements VaultGearItem {
     }
 
     @NotNull
-    @SuppressWarnings({"deprecation","removal"})
+    @SuppressWarnings({"deprecation"})
     public ProficiencyType getCraftingProficiencyType(ItemStack itemStack) {
         return ProficiencyType.FOCUS;
     }
