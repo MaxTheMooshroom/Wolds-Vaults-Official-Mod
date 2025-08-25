@@ -38,44 +38,44 @@ public class BuilderItemTransforms {
       this.block_model_builder = Optional.of(bmb);
    }
 
-   // public BuilderItemTransforms transform(TransformType type, ItemTransform transform) {
-   //    if (this.block_model_builder == null) {
-   //       throw new IllegalStateException("ItemTransformsBuilder already used");
-   //    }
+   public BuilderItemTransforms transform(TransformType type, ItemTransform transform) {
+      if (this.block_model_builder == null) {
+         throw new IllegalStateException("ItemTransformsBuilder already used");
+      }
       
-   //    switch (type) {
-   //    case THIRD_PERSON_LEFT_HAND:
-   //       this.thirdPersonLeftHand = transform;
-   //       break;
-   //    case THIRD_PERSON_RIGHT_HAND:
-   //       this.thirdPersonRightHand = transform;
-   //       break;
-   //    case FIRST_PERSON_LEFT_HAND:
-   //       this.firstPersonLeftHand = transform;
-   //       break;
-   //    case FIRST_PERSON_RIGHT_HAND:
-   //       this.firstPersonRightHand = transform;
-   //       break;
-   //    case HEAD:
-   //       this.head = transform;
-   //       break;
-   //    case GUI:
-   //       this.gui = transform;
-   //       break;
-   //    case GROUND:
-   //       this.ground = transform;
-   //       break;
-   //    case FIXED:
-   //       this.fixed = transform;
-   //       break;
-   //    default:
-   //    }
+      switch (type) {
+      case THIRD_PERSON_LEFT_HAND:
+         this.thirdPersonLeftHand = transform;
+         break;
+      case THIRD_PERSON_RIGHT_HAND:
+         this.thirdPersonRightHand = transform;
+         break;
+      case FIRST_PERSON_LEFT_HAND:
+         this.firstPersonLeftHand = transform;
+         break;
+      case FIRST_PERSON_RIGHT_HAND:
+         this.firstPersonRightHand = transform;
+         break;
+      case HEAD:
+         this.head = transform;
+         break;
+      case GUI:
+         this.gui = transform;
+         break;
+      case GROUND:
+         this.ground = transform;
+         break;
+      case FIXED:
+         this.fixed = transform;
+         break;
+      default:
+      }
 
-   //    return this;
-   // }
+      return this;
+   }
 
    public BuilderItemTransforms transform(TransformType type, Vector3f rotation, Vector3f translation, Vector3f scale) {
-      // return this.transform(type, new ItemTransform(rotation, translation, scale));
+      return this.transform(type, new ItemTransform(rotation, translation, scale));
    }
 
    public BuilderItemTransforms moddedTransform(TransformType type, ItemTransform transform) {

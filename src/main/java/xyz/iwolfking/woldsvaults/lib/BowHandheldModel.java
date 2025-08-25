@@ -4,7 +4,6 @@ import iskallia.vault.dynamodel.DynamicModel;
 import iskallia.vault.dynamodel.model.item.HandHeldModel;
 
 import net.minecraft.client.renderer.block.model.BlockModel;
-import net.minecraft.client.renderer.block.model.ItemTransform;
 import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.resources.ResourceLocation;
@@ -19,11 +18,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import xyz.iwolfking.woldsvaults.builders.BuilderBlockModel;
-import xyz.iwolfking.woldsvaults.mixins.vaulthunters.custom.MixinDynamicModel;
 
-// see also:
-// xyz.iwolfking.woldsvaults.mixins.vaulthunters.custom.MixinDynamicModel.createDefaultItemModel()
-@SuppressWarnings({"deprecation"})
 public class BowHandheldModel extends DynamicModel<HandHeldModel> {
    public BowHandheldModel(ResourceLocation id, String displayName) {
       super(id, displayName);
