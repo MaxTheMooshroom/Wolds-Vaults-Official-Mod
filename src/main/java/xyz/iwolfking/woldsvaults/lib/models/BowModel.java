@@ -6,7 +6,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import com.mojang.math.Vector3f;
 
 import iskallia.vault.dynamodel.DynamicModel;
 import iskallia.vault.init.ModDynamicModels;
@@ -14,7 +13,7 @@ import iskallia.vault.init.ModDynamicModels;
 import java.util.HashMap;
 import java.util.Map;
 
-import xyz.iwolfking.woldsvaults.builders.BuilderBlockModel;
+import xyz.iwolfking.woldsvaults.util.builders.BuilderBlockModel;
 
 public class BowModel extends DynamicModel<BowModel> {
    public BowModel(ResourceLocation id, String displayName) {
@@ -31,58 +30,47 @@ public class BowModel extends DynamicModel<BowModel> {
 
    static {
       BuilderBlockModel builder = new BuilderBlockModel()
-         .parent("minecraft:item/generated")
+         .parent("item/generated")
          .putTexture("layer0", "minecraft:item/bow")
-         .beginTransforms()
-            .transform(TransformType.THIRD_PERSON_LEFT_HAND, 
-               new Vector3f(-80.0f, -280.0f, 40.0f),
-               new Vector3f(-1.0f, -2.0f, 2.5f),
-               new Vector3f(0.9f, 0.9f, 0.9f)
-            )
-            .transform(TransformType.THIRD_PERSON_RIGHT_HAND, 
-               new Vector3f(-80.0f, 260.0f, -40.0f),
-               new Vector3f(-1.0f, -2.0f, 2.5f),
-               new Vector3f(0.9f, 0.9f, 0.9f)
-            )
-            .transform(TransformType.FIRST_PERSON_LEFT_HAND, 
-               new Vector3f(0.0f, 90.0f, -25.0f),
-               new Vector3f(1.13f, 3.2f, 1.13f),
-               new Vector3f(0.68f, 0.68f, 0.68f)
-            )
-            .transform(TransformType.FIRST_PERSON_RIGHT_HAND, 
-               new Vector3f(0.0f, -90.0f, 25.0f),
-               new Vector3f(1.13f, 3.2f, 1.13f),
-               new Vector3f(0.68f, 0.68f, 0.68f)
-            )
+         .beginTransforms(TransformType.THIRD_PERSON_LEFT_HAND)
+               .rotation(-80.0f, -280.0f, 40.0f)
+               .translation(-1.0f, -2.0f, 2.5f)
+               .scale(0.9f, 0.9f, 0.9f)
+            .next(TransformType.THIRD_PERSON_RIGHT_HAND)
+               .rotation(-80.0f, 260.0f, -40.0f)
+               .translation(-1.0f, -2.0f, 2.5f)
+               .scale(0.9f, 0.9f, 0.9f)
+            .next(TransformType.FIRST_PERSON_LEFT_HAND)
+               .rotation(0.0f, 90.0f, -25.0f)
+               .translation(1.13f, 3.2f, 1.13f)
+               .scale(0.68f, 0.68f, 0.68f)
+            .next(TransformType.FIRST_PERSON_RIGHT_HAND)
+               .rotation(0.0f, -90.0f, 25.0f)
+               .translation(1.13f, 3.2f, 1.13f)
+               .scale(0.68f, 0.68f, 0.68f)
             .buildTransforms()
-         .beginOverride("minecraft:item/bow_pulling_0")
+         .beginOverrides("item/bow_pulling_0")
             .predicate("pulling", 1.0f)
-            .buildOverride()
-         .beginOverride("minecraft:item/bow_pulling_1")
+         .next("item/bow_pulling_1")
             .predicate("pulling", 1.0f)
             .predicate("pull", 0.65f)
-            .buildOverride()
-         .beginOverride("minecraft:item/bow_pulling_2")
+         .next("item/bow_pulling_2")
             .predicate("pulling", 1.0f)
             .predicate("pull", 0.9f)
-            .buildOverride()
-         .beginOverride("item/custom_bow")
+         .next("item/custom_bow")
             .predicate("custom_model_data", 1.0f)
-            .buildOverride()
-         .beginOverride("item/custom_bow_pulling_0")
+         .next("item/custom_bow_pulling_0")
             .predicate("custom_model_data", 1.0f)
             .predicate("pulling", 1)
-            .buildOverride()
-         .beginOverride("item/custom_bow_pulling_1")
+         .next("item/custom_bow_pulling_1")
             .predicate("custom_model_data", 1.0f)
             .predicate("pulling", 1)
             .predicate("pull", 0.65f)
-            .buildOverride()
-         .beginOverride("item/custom_bow_pulling_2")
+         .next("item/custom_bow_pulling_2")
             .predicate("custom_model_data", 1.0f)
             .predicate("pulling", 1)
             .predicate("pull", 0.9f)
-            .buildOverride();
+         .buildOverrides();
 
       MODEL = builder.build();
    }
