@@ -12,12 +12,10 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 
-import com.mojang.math.Vector3f;
-
 import java.util.Map;
 import java.util.Optional;
 
-import xyz.iwolfking.woldsvaults.builders.BuilderBlockModel;
+import xyz.iwolfking.woldsvaults.util.builders.BuilderBlockModel;
 
 public class BowHandheldModel extends DynamicModel<HandHeldModel> {
    public BowHandheldModel(ResourceLocation id, String displayName) {
@@ -41,40 +39,33 @@ public class BowHandheldModel extends DynamicModel<HandHeldModel> {
          MODEL = Optional.empty();
       } else {
          BuilderBlockModel builder = new BuilderBlockModel()
-            .parent("minecraft:item/generated")
-            .beginTransforms()
-               .transform(TransformType.THIRD_PERSON_LEFT_HAND, 
-                  new Vector3f(-80.0f, -280.0f, 40.0f),
-                  new Vector3f(1.0f, -2.0f, 2.5f),
-                  new Vector3f(0.9f, 0.9f, 0.9f)
-               )
-               .transform(TransformType.THIRD_PERSON_RIGHT_HAND, 
-                  new Vector3f(-80.0f, 260.0f, -40.0f),
-                  new Vector3f(-1.0f, -2.0f, 2.5f),
-                  new Vector3f(0.9f, 0.9f, 0.9f)
-               )
-               .transform(TransformType.FIRST_PERSON_LEFT_HAND, 
-                  new Vector3f(0.0f, 90.0f, -25.0f),
-                  new Vector3f(1.13f, 3.2f, 1.13f),
-                  new Vector3f(0.68f, 0.68f, 0.68f)
-               )
-               .transform(TransformType.FIRST_PERSON_RIGHT_HAND, 
-                  new Vector3f(0.0f, -90.0f, 25.0f),
-                  new Vector3f(1.13f, 3.2f, 1.13f),
-                  new Vector3f(0.68f, 0.68f, 0.68f)
-               )
+            .parent("item/generated")
+            .beginTransforms(TransformType.THIRD_PERSON_LEFT_HAND)
+                  .rotation(-80.0f, -280.0f, 40.0f)
+                  .translation(1.0f, -2.0f, 2.5f)
+                  .scale(0.9f, 0.9f, 0.9f)
+               .next(TransformType.THIRD_PERSON_RIGHT_HAND) 
+                  .rotation(-80.0f, 260.0f, -40.0f)
+                  .translation(-1.0f, -2.0f, 2.5f)
+                  .scale(0.9f, 0.9f, 0.9f)
+               .next(TransformType.FIRST_PERSON_LEFT_HAND)
+                  .rotation(0.0f, 90.0f, -25.0f)
+                  .translation(1.13f, 3.2f, 1.13f)
+                  .scale(0.68f, 0.68f, 0.68f)
+               .next(TransformType.FIRST_PERSON_RIGHT_HAND)
+                  .rotation(0.0f, -90.0f, 25.0f)
+                  .translation(1.13f, 3.2f, 1.13f)
+                  .scale(0.68f, 0.68f, 0.68f)
                .buildTransforms()
-            .beginOverride("item/bow_pulling_0")
-               .predicate("pulling", 1.0f)
-               .buildOverride()
-            .beginOverride("item/bow_pulling_1")
-               .predicate("pulling", 1.0f)
-               .predicate("pull", 0.65f)
-               .buildOverride()
-            .beginOverride("item/bow_pulling_2")
-               .predicate("pulling", 1.0f)
-               .predicate("pull", 0.9f)
-               .buildOverride()
+            .beginOverrides("item/bow_pulling_0")
+                  .predicate("pulling", 1.0f)
+               .next("item/bow_pulling_1")
+                  .predicate("pulling", 1.0f)
+                  .predicate("pull", 0.65f)
+               .next("item/bow_pulling_2")
+                  .predicate("pulling", 1.0f)
+                  .predicate("pull", 0.9f)
+               .buildOverrides()
             .ambientOcclusion(true)
             .guiLight(BlockModel.GuiLight.SIDE);
 

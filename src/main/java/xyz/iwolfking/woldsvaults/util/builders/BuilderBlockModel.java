@@ -1,4 +1,4 @@
-package xyz.iwolfking.woldsvaults.builders;
+package xyz.iwolfking.woldsvaults.util.builders;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.block.model.BlockElement;
 import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.client.renderer.block.model.ItemOverride;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
+import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.resources.ResourceLocation;
 
@@ -72,19 +73,23 @@ public class BuilderBlockModel {
       return this;
    }
 
-   public BuilderItemTransforms beginTransforms() {
+   public BuilderItemTransforms.BuilderItemTransform beginTransforms(TransformType pType) {
       if (this.frozen) {
          throw new IllegalStateException("Frozen BlockModelBuilders cannot be mutated. Consider using .clone().beginTransforms()");
       }
-      return new BuilderItemTransforms(this);
+      return new BuilderItemTransforms(this).beginTransforms(pType);
    }
 
-   public BuilderBlockModelOverride beginOverride(String model) {
+   public BuilderBlockModelOverrides beginOverrides(ResourceLocation pModel) {
       if (this.frozen) {
          throw new IllegalStateException("Frozen BlockModelBuilders cannot be mutated. Consider using .clone().addOverride()");
       }
       
-      return new BuilderBlockModelOverride(this, model);
+      return new BuilderBlockModelOverrides(this, pModel);
+   }
+
+   public BuilderBlockModelOverrides beginOverrides(String pModel) {
+      return this.beginOverrides(new ResourceLocation(pModel));
    }
 
    void addOverride(ResourceLocation id, List<Pair<ResourceLocation, Float>> pairs) {
@@ -134,7 +139,7 @@ public class BuilderBlockModel {
    private Map<String, Either<Material, String>> textureMap = new HashMap<>();
    private boolean ambientOcclusion = true;
    private BlockModel.GuiLight guiLight = BlockModel.GuiLight.SIDE;
-   private List<ItemOverride> overrides = new ArrayList<>();
+   List<ItemOverride> overrides = new ArrayList<>();
    ItemTransforms transforms = ItemTransforms.NO_TRANSFORMS;
 }
 
