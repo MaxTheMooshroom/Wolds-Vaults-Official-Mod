@@ -6,6 +6,10 @@
 *.ipr
 *.iws
 
+# Nix stuff
+.envrc
+.direnv/
+
 # IntelliJ
 out/
 # mpeltonen/sbt-idea plugin
