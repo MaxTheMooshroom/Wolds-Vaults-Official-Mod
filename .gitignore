@@ -1,9 +1,14 @@
 # User-specific stuff
 .idea/
+.vscode/
 
 *.iml
 *.ipr
 *.iws
+
+# Nix stuff
+.envrc
+.direnv/
 
 # IntelliJ
 out/
